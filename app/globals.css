@@ -1,8 +1,47 @@
 @import "tailwindcss";
 
+/* ── Dark (default) ── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #101010;
+  --foreground: #ffffff;
+  --c-bg: #101010;
+  --c-nav-bg: rgba(16,16,16,0.85);
+  --c-text: #FAFAFA;
+  --c-muted: #A1A1A1;
+  --c-surface: rgba(255,255,255,0.03);
+  --c-surface-hover: rgba(255,255,255,0.05);
+  --c-surface-2: rgba(255,255,255,0.06);
+  --c-border: rgba(255,255,255,0.08);
+  --c-border-strong: rgba(255,255,255,0.2);
+  --c-pill: #18181b;
+  --c-pill-hover: #27272a;
+  --cell-0: #262626;
+  --cell-1: #404040;
+  --cell-2: #6b6b6b;
+  --cell-3: #a3a3a3;
+  --cell-4: #e5e5e5;
+}
+
+/* ── Light ── */
+:root[data-theme="light"] {
+  --background: #f7f7f7;
+  --foreground: #111111;
+  --c-bg: #f7f7f7;
+  --c-nav-bg: rgba(247,247,247,0.85);
+  --c-text: #111111;
+  --c-muted: #4a4a4a;
+  --c-surface: rgba(0,0,0,0.04);
+  --c-surface-hover: rgba(0,0,0,0.06);
+  --c-surface-2: rgba(0,0,0,0.07);
+  --c-border: rgba(0,0,0,0.1);
+  --c-border-strong: rgba(0,0,0,0.25);
+  --c-pill: #ececec;
+  --c-pill-hover: #e0e0e0;
+  --cell-0: #e8e8e8;
+  --cell-1: #b0b0b0;
+  --cell-2: #7a7a7a;
+  --cell-3: #4a4a4a;
+  --cell-4: #1a1a1a;
 }
 
 @theme inline {
@@ -10,17 +49,30 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-pixel: var(--font-geist-pixel-square);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 18px;
+}
+
+section {
+  scroll-margin-top: 5rem;
+}
+
+
+@keyframes roleIn {
+  from { opacity: 0; transform: translateY(8px); filter: blur(6px); }
+  to   { opacity: 1; transform: translateY(0);   filter: blur(0);   }
+}
+
+@keyframes roleOut {
+  from { opacity: 1; transform: translateY(0);   filter: blur(0);   }
+  to   { opacity: 0; transform: translateY(-8px); filter: blur(6px); }
 }
