@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   title: "Harshit - Developer",
   description:
     "Full stack web developer building clean, efficient applications with modern technologies.",
+  icons: {
+    icon: "/favicon-round.png",
+  },
 };
 
 export default function RootLayout({
