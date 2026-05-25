@@ -583,7 +583,7 @@ export default function Home() {
           </p>
         )}
         <p className="text-xs text-zinc-600">
-          Built by Ratnesh. The source code is available on{" "}
+          Built by Harshit. The source code is available on{" "}
           <a
             href="https://github.com/harshitchakrawal"
             target="_blank"
