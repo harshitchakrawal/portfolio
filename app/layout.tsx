@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
 import { GeistPixelSquare } from "geist/font/pixel";
+import Preloader from "@/components/Preloader";
+import SmoothScroll from "@/components/SmoothScroll";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -30,10 +28,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${GeistPixelSquare.variable} h-full antialiased`}
+      className={`${GeistSans.variable} ${geistMono.variable} ${GeistPixelSquare.variable} h-full antialiased`}
+      // the preloader's boot script stamps data-preloader-* before hydration
+      suppressHydrationWarning
     >
-      <body className={`${geistSans.className} min-h-full flex flex-col`}>
-        {children}
+      <body className="min-h-full flex flex-col">
+        <Preloader />
+        <SmoothScroll>{children}</SmoothScroll>
       </body>
     </html>
   );

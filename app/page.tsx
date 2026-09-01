@@ -47,6 +47,18 @@ const ArrowUpRightIcon = () => (
   </svg>
 );
 
+const ProjectLink = ({ href, label }: { href: string; label: string }) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex items-center gap-1 text-zinc-500 hover:text-(--c-text) transition-colors"
+  >
+    {label}
+    <ArrowUpRightIcon />
+  </a>
+);
+
 const projects = [
   {
     name: "TriggerInsta",
@@ -86,6 +98,16 @@ const stack = [
   { id: "shadcn-ui",   title: "shadcn/ui",   href: "https://ui.shadcn.com/",                                  themed: true  },
   { id: "figma",       title: "Figma",       href: "https://www.figma.com/",                                  themed: false },
   { id: "git",         title: "Git",         href: "https://git-scm.com/",                                    themed: false },
+];
+
+const footerSocials = [
+  { label: "X.com", handle: "@callmehxrshit", href: "https://x.com/callmehxrshit" },
+  {
+    label: "LinkedIn",
+    handle: "@harshitchakrawal",
+    href: "https://www.linkedin.com/in/harshit-chakrawal-09876636b/",
+  },
+  { label: "GitHub", handle: "@harshitchakrawal", href: "https://github.com/harshitchakrawal" },
 ];
 
 const roles = [
@@ -214,12 +236,28 @@ export default function Home() {
   const [visible, setVisible] = useState(true);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [visitorCount, setVisitorCount] = useState<number | null>(null);
+  const [localTime, setLocalTime] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("https://api.countapi.xyz/hit/harshitchakrawal-portfolio/visits")
       .then((r) => r.json())
       .then((d) => setVisitorCount(d.value))
       .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const tick = () =>
+      setLocalTime(
+        new Date().toLocaleTimeString("en-US", {
+          timeZone: "Asia/Kolkata",
+          hour: "numeric",
+          minute: "2-digit",
+          second: "2-digit",
+        })
+      );
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
   }, []);
 
   useEffect(() => {
@@ -318,6 +356,19 @@ export default function Home() {
 
         {/* ── Hero / About ── */}
         <section id="about">
+          {/* Banner */}
+          <div className="relative mb-6 h-36 sm:h-48 rounded-2xl overflow-hidden border border-(--c-border)">
+            <Image
+              src="/banner.jpg"
+              alt=""
+              fill
+              preload
+              sizes="(max-width: 768px) 100vw, 768px"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10" />
+          </div>
+
           {/* Name + role inline */}
           <div className="flex items-center gap-4 mb-4">
             <Image
@@ -345,22 +396,23 @@ export default function Home() {
             </div>
           </div>
 
-          <p className="text-[17px] sm:text-[19px] text-(--c-muted) leading-normal mb-4">
-            I&apos;m Harshit, 21 — I live in the{" "}
-            <span className="text-(--c-text)">full stack</span>, which basically means I argue with
-            both the backend and the frontend equally. I craft web apps with the{" "}
-            <span className="text-(--c-text)">MERN stack</span>, obsessing over clean architecture
-            on the server and smooth, pixel-honest experiences on the screen. Shipping something
-            real — something people actually use — is the only metric I care about.
+          <p className="text-[16px] sm:text-[18px] text-(--c-muted) leading-normal mb-4">
+            yo, I&apos;m Harshit — a{" "}
+            <span className="text-(--c-text)">developer and builder</span> from India, passionate
+            about creating products, <span className="text-(--c-text)">developer tools</span>, and
+            scalable web applications.
           </p>
 
-          <p className="text-[17px] sm:text-[19px] text-(--c-muted) leading-normal mb-8">
-            Off the keyboard, I&apos;m diving into{" "}
-            <span className="text-(--c-text)">AI&nbsp;&amp;&nbsp;ML</span> — because why just build
-            software when you can teach it to think. I grind{" "}
-            <span className="text-(--c-text)">LeetCode </span> not for the streaks, but because
-            there&apos;s something oddly satisfying about cracking an algorithm at 2am. Problem
-            solving isn&apos;t just what I do — it&apos;s how I&apos;m wired.
+          <p className="text-[16px] sm:text-[18px] text-(--c-muted) leading-normal mb-4">
+            I enjoy turning ideas into real products, exploring new technologies, and sharing what I
+            learn along the way. From crafting polished{" "}
+            <span className="text-(--c-text)">frontends</span> to building robust{" "}
+            <span className="text-(--c-text)">backend systems</span>, I&apos;m always looking for
+            ways to build better, faster, and smarter.
+          </p>
+
+          <p className="text-[16px] sm:text-[18px] text-(--c-muted) leading-normal mb-8">
+            Currently learning, building, and shipping — one project at a time.
           </p>
 
           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
@@ -396,82 +448,19 @@ export default function Home() {
           <h2 className="text-[13px] font-mono text-zinc-500 uppercase tracking-widest underline underline-offset-4 decoration-zinc-700 mb-3">
             Projects
           </h2>
-          <div className="space-y-4 sm:-mx-6">
+          <div className="space-y-7">
             {projects.map((p) => (
-              <div
-                key={p.name}
-                className="border border-(--c-border) bg-(--c-surface) hover:border-(--c-border-strong) hover:bg-(--c-surface-hover) transition-all overflow-hidden rounded-xl"
-              >
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 sm:h-56">
-
-                  {/* Top/Left — preview */}
-                  <div className="relative overflow-hidden bg-black h-36 sm:h-full">
-                    {p.image ? (
-                      <Image
-                        src={p.image}
-                        alt={p.name}
-                        fill
-                        className="object-cover object-top"
-                      />
-                    ) : (
-                      <iframe
-                        src={p.live}
-                        title={p.name}
-                        className="absolute top-1/2 left-1/2 pointer-events-none"
-                        style={{
-                          width: "960px",
-                          height: "600px",
-                          transform: "translate(-50%, -50%) scale(0.33)",
-                          transformOrigin: "center",
-                          border: "none",
-                        }}
-                        loading="lazy"
-                      />
-                    )}
-                  </div>
-
-                  {/* Bottom/Right — details */}
-                  <div className="p-3 sm:p-5 flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center justify-between gap-2 mb-1">
-                        <h3 className="text-[16px] font-semibold text-(--c-text)">{p.name}</h3>
-                        <div className="flex items-center gap-2 shrink-0">
-                          <a
-                            href={p.github}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-zinc-500 hover:text-(--c-text) transition-colors"
-                            aria-label="GitHub"
-                          >
-                            <GitHubIcon />
-                          </a>
-                          {p.live && (
-                            <a
-                              href={p.live}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-zinc-500 hover:text-(--c-text) transition-colors"
-                              aria-label="Live demo"
-                            >
-                              <ArrowUpRightIcon />
-                            </a>
-                          )}
-                        </div>
-                      </div>
-                      <p className="text-sm sm:text-[16px] text-(--c-muted) leading-normal">{p.description}</p>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5 mt-4">
-                      {p.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-2 py-0.5 rounded-md bg-(--c-surface-2) text-(--c-muted) text-[13px] border border-(--c-border)"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+              <div key={p.name}>
+                <div className="flex items-baseline justify-between gap-4">
+                  <h3 className="text-[17px] font-semibold text-(--c-text)">{p.name}</h3>
+                  <div className="flex items-center gap-4 shrink-0 text-[14px]">
+                    {p.live && <ProjectLink href={p.live} label="Website" />}
+                    {p.github && <ProjectLink href={p.github} label="GitHub" />}
                   </div>
                 </div>
+                <p className="mt-1.5 text-sm sm:text-[17px] text-(--c-muted) leading-relaxed">
+                  {p.description}
+                </p>
               </div>
             ))}
           </div>
@@ -479,7 +468,7 @@ export default function Home() {
 
         {/* ── Tech Stack ── */}
         <section id="skills" className="-mb-10">
-          <h2 className="text-[13px] font-pixel text-(--c-muted) uppercase tracking-widest mb-6">
+          <h2 className="text-[13px] font-mono text-zinc-500 uppercase tracking-widest underline underline-offset-4 decoration-zinc-700 mb-6">
             Tech Stack
           </h2>
           <ul className="flex flex-wrap gap-2 select-none">
@@ -508,7 +497,7 @@ export default function Home() {
           {/* GitHub contribution graph */}
           <div className="mt-10">
             <h2 className="text-[13px] font-mono text-zinc-500 uppercase tracking-widest underline underline-offset-4 decoration-zinc-700 mb-4">
-              GitHub Contributions
+              Performance
             </h2>
             <GitHubContributions />
           </div>
@@ -525,7 +514,7 @@ export default function Home() {
                 <div>
                   <p className="text-[16px] font-semibold text-(--c-text) mb-0.5">B.Tech — Information Technology</p>
                   <p className="text-sm text-(--c-muted)">Madan Mohan Malaviya University of Technology</p>
-                  <p className="text-sm text-zinc-500 mt-1">2nd Year · CGPA 8.2</p>
+                  <p className="text-sm text-zinc-500 mt-1">2nd Year · CGPA 8.5</p>
                 </div>
                 <span className="text-sm text-zinc-500 sm:shrink-0">2025 – 2029</span>
               </div>
@@ -576,24 +565,60 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-(--c-border) max-w-3xl mx-auto px-6 py-6 flex flex-col gap-1">
-        {visitorCount !== null && (
-          <p className="text-xs text-zinc-500">
-            You&apos;re the {ordinal(visitorCount)} visitor
+      <footer className="relative z-10 border-t border-(--c-border) max-w-3xl mx-auto px-6 pt-10 pb-6 overflow-hidden">
+        <div className="flex flex-col gap-2 mb-10">
+          {footerSocials.map((s) => (
+            <a
+              key={s.label}
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-3 rounded-xl border border-(--c-border) bg-(--c-surface) px-4 py-3 hover:border-(--c-border-strong) hover:bg-(--c-surface-hover) transition-colors"
+            >
+              <span className="text-sm text-(--c-text)">{s.label}</span>
+              <span className="flex-1 border-t border-dashed border-(--c-border-strong)" />
+              <span className="flex items-center gap-2 text-sm text-zinc-500 group-hover:text-(--c-muted) transition-colors">
+                {s.handle}
+                <ArrowUpRightIcon />
+              </span>
+            </a>
+          ))}
+        </div>
+
+        <div className="flex items-start justify-between mb-10">
+          <div>
+            <p className="text-[11px] font-mono uppercase tracking-widest text-zinc-500 mb-1">
+              Local Time
+            </p>
+            <p className="text-sm text-(--c-text) tabular-nums">{localTime ?? "—"}</p>
+          </div>
+          <div className="text-right">
+            <p className="text-[11px] font-mono uppercase tracking-widest text-zinc-500 mb-1">
+              Version
+            </p>
+            <p className="text-sm text-(--c-text)">{new Date().getFullYear()} &copy; Edition</p>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-1 mt-4">
+          {visitorCount !== null && (
+            <p className="text-xs text-zinc-500">
+              You&apos;re the {ordinal(visitorCount)} visitor
+            </p>
+          )}
+          <p className="text-xs text-zinc-600">
+            Built by Harshit. The source code is available on{" "}
+            <a
+              href="https://github.com/harshitchakrawal"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-zinc-400 transition-colors"
+            >
+              GitHub
+            </a>
+            .
           </p>
-        )}
-        <p className="text-xs text-zinc-600">
-          Built by Harshit. The source code is available on{" "}
-          <a
-            href="https://github.com/harshitchakrawal"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-zinc-400 transition-colors"
-          >
-            GitHub
-          </a>
-          .
-        </p>
+        </div>
       </footer>
     </div>
   );
