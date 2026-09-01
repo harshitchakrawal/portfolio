@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
-import { Geist_Mono } from "next/font/google";
-import { GeistSans } from "geist/font/sans";
-import { GeistPixelSquare } from "geist/font/pixel";
-import Preloader from "@/components/Preloader";
-import SmoothScroll from "@/components/SmoothScroll";
+import { Bricolage_Grotesque } from "next/font/google";
 import "./globals.css";
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
   subsets: ["latin"],
 });
 
@@ -26,16 +22,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${GeistSans.variable} ${geistMono.variable} ${GeistPixelSquare.variable} h-full antialiased`}
-      // the preloader's boot script stamps data-preloader-* before hydration
-      suppressHydrationWarning
-    >
-      <body className="min-h-full flex flex-col">
-        <Preloader />
-        <SmoothScroll>{children}</SmoothScroll>
-      </body>
+    <html lang="en" className={`${bricolage.variable} antialiased`}>
+      <body>{children}</body>
     </html>
   );
 }
